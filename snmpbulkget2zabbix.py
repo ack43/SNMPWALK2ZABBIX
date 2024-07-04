@@ -25,13 +25,13 @@ import uuid
 
 if len(sys.argv) < 3:
     print(
-        "Usage: python snmpwalk2zabbix.py \x1B[3mCommunity\x1B[23m \x1B[3mIP-Address\x1B[23m \x1B[3mBase-OID\x1B[23m\neg,\npython snmpwalk2zabbix.py public 127.0.0.1 1.3.6.1.2.1.1")
+        "Usage: python snmpbulkget2zabbix.py \x1B[3mCommunity\x1B[23m \x1B[3mIP-Address\x1B[23m \x1B[3mBase-OID\x1B[23m\neg,\npython snmpwalk2zabbix.py public 127.0.0.1 1.3.6.1.2.1.1")
 else:
     COMMUNITY = sys.argv[1]
     IP = sys.argv[2]
     BASE_OID = sys.argv[3] if len(sys.argv) == 4 else "."
 
-    OIDSRESPONSE = os.popen('snmpwalk -v 2c -On -Ln -c ' +
+    OIDSRESPONSE = os.popen('snmpbulkget -v 2c -On -Ln -c ' +
                             COMMUNITY + ' ' + IP + ' ' + BASE_OID).read()
     # MIBSRESPONSE = os.popen('snmpwalk -Ln -v 2c -OX -c ' +
     #                        COMMUNITY + ' ' + IP + ' ' + BASE_OID).read()
@@ -90,7 +90,7 @@ else:
 
     for i, oid in enumerate(OIDS):
         if len(oid) > 0:  # and i < 7:
-            print(str(i) + " " + str(len(OIDS)) + " " + str(len(oid)))
+            #print(str(i) + " " + str(len(OIDS)) + " " + str(len(oid)))
             if not "NO MORE VARIABLES LEFT" in oid.upper():
                 oid_kvp = oid.split("=")
                 mib = oid_kvp  # set it to the OID in case MIB version can't be found
@@ -137,7 +137,7 @@ else:
                                             r"\s\s+", " ", description)
                                         # print(description)
 
-                            print(oid_kvp[0].strip() + ", " + mib + ", " + value)
+                            #print(oid_kvp[0].strip() + ", " + mib + ", " + value)
 
                             if fullOidStringParts[8].upper().endswith("TABLE"):
                                 # table = os.popen('snmptable -v 2c -c ' +
@@ -149,7 +149,7 @@ else:
                                     "::" + fullOidStringParts[8]
                                 #name = fullOidStringParts[8]
                                 key = mib.replace("::", ".")
-                                print(fullOidStringParts[8] + " " + fullOidStringParts[9] + " " + fullOidStringParts[10])
+                                #print(fullOidStringParts[8] + " " + fullOidStringParts[9] + " " + fullOidStringParts[10])
                                 if not name in DISCOVERY_RULES:
                                     DISCOVERY_RULES[name] = []
                                     LAST_PART_10 = ""

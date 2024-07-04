@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>6.0</version>
+    <templates>
+        <template>
+            <uuid>9d77096af9c847b0ae414b414bc7d925</uuid>
+            <template>my template SNMP</template>
+            <name>my template SNMP</name>
+            <description>Template built by SNMPWALK2ZABBIX script from https://github.com/Sean-Bradley/SNMPWALK2ZABBIX</description>
+            <groups>
+                <group>
+                    <name>Templates</name>
+                </group>
+            </groups>
+            <items>
+        </template>
+    </templates>
+</zabbix_export>
