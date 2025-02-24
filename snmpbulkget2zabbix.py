@@ -22,14 +22,25 @@ import sys
 import os
 import re
 import uuid
+import argparse
 
 if len(sys.argv) < 3:
     print(
         "Usage: python snmpbulkget2zabbix.py \x1B[3mCommunity\x1B[23m \x1B[3mIP-Address\x1B[23m \x1B[3mBase-OID\x1B[23m\neg,\npython snmpwalk2zabbix.py public 127.0.0.1 1.3.6.1.2.1.1")
 else:
-    COMMUNITY = sys.argv[1]
-    IP = sys.argv[2]
-    BASE_OID = sys.argv[3] if len(sys.argv) == 4 else "."
+    parser = argparse.ArgumentParser(description="A script that takes arguments.")
+    parser.add_argument("community", type=str, help="SNMP community")
+    parser.add_argument("ip", type=str, help="target IP address")
+    parser.add_argument("base_oid", default='.', type=str, help="base OID")
+    parser.add_argument("--output", type=str, help="output file path")
+    parser.add_argument("--name", type=str, help="template name")
+
+    args = parser.parse_args()
+
+    COMMUNITY = args.community
+    IP = args.ip
+    BASE_OID = args.base_oid if len(sys.argv) == 4 else "."
+
 
     OIDSRESPONSE = os.popen('snmpbulkget -v 2c -On -Ln -c ' +
                             COMMUNITY + ' ' + IP + ' ' + BASE_OID).read()
@@ -180,18 +191,22 @@ else:
                                 print("ITEM -> " + mib + " -> " + name + " (" +
                                       ("NUMERIC" if data_type is None else data_type) + ")")
 
+    template_name = args.name if args.name is not None else TEMPLATE_NAME + " SNMP"
     xml = """<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <zabbix_export>
     <version>6.0</version>
     <templates>
         <template>
             <uuid>""" + uuid.uuid4().hex + """</uuid>
-            <template>""" + TEMPLATE_NAME + """ SNMP</template>
-            <name>""" + TEMPLATE_NAME + """ SNMP</name>
-            <description>Template built by SNMPWALK2ZABBIX script from https://github.com/Sean-Bradley/SNMPWALK2ZABBIX</description>
+            <template>""" + template_name + """</template>
+            <name>""" + template_name + """</name>
+            <description>Template built by SNMPWALK2ZABBIX script from https://github.com/ack43/SNMPWALK2ZABBIX</description>
             <groups>
                 <group>
                     <name>Templates</name>
+                </group>
+                <group>
+                    <name>Ephoria</name>
                 </group>
             </groups>
             <items>"""
@@ -294,7 +309,8 @@ else:
     </templates>
 </zabbix_export>"""
 
-    with open("template-" + TEMPLATE_NAME.replace(" ", "-") + ".xml", "w") as xml_file:
+    output_file_path = args.output if args.output else "template-" + TEMPLATE_NAME.replace(" ", "-") + ".xml"
+    with open(output_file_path, "w") as xml_file:
         xml_file.write(xml)
 
     print("Done")

@@ -16,7 +16,7 @@ Create a Zabbix template from an SNMPWALK response.
 ## Download
 
 ```bash
-wget https://raw.githubusercontent.com/Sean-Bradley/SNMPWALK2ZABBIX/master/snmpwalk2zabbix.py
+wget https://raw.githubusercontent.com/Sean-Bradley/ack43/master/snmpwalk2zabbix.py
 ```
 
 ## Install SNMP and SNMP-MIBS-Downloader
@@ -37,6 +37,15 @@ python3 snmpwalk2zabbix.py community-string IP-address root-OID
 - `community-string` : This is the v2c community name. Most systems default to use `public` as the community name.
 - `IP-address` : The IP address of the SNMP device that returns a valid `snmpwalk` response.
 - `root-OID` : Indicates which OID to start creating items from. An OID very low, e.g, `1`, will result in a much larger template, versus using `1.3` or `1.3.6` or `1.3.6.1` or `1.3.6.1.2` or `1.3.6.1.2.1`, etc.
+
+#### Additional 
+
+```bash
+python3 snmpwalk2zabbix.py community-string IP-address root-OID --name ZBX_TMPLT_NAME --output /path/to/file.xml
+```
+
+- `--name` : Template name ( will set <template>ZBX_TMPLT_NAME</template> and <name>ZBX_TMPLT_NAME</name>)
+- `--output` : Output file path
 
 ## Example
 
@@ -79,7 +88,7 @@ E.g.,
             <uuid>612e6942006545ad90f9962eb1ccce14</uuid>
             <template>Archer MR600 SNMP</template>
             <name>Archer MR600 SNMP</name>
-            <description>Template built by SNMPWALK2ZABBIX script from https://github.com/Sean-Bradley/SNMPWALK2ZABBIX</description>
+            <description>Template built by SNMPWALK2ZABBIX script from https://github.com/ack43/SNMPWALK2ZABBIX</description>
             <groups>
                 <group>
                     <name>Templates</name>
