@@ -44,7 +44,7 @@ python3 snmpwalk2zabbix.py community-string IP-address root-OID
 python3 snmpwalk2zabbix.py community-string IP-address root-OID --name ZBX_TMPLT_NAME --output /path/to/file.xml
 ```
 
-- `--name` : Template name ( will set <template>ZBX_TMPLT_NAME</template> and <name>ZBX_TMPLT_NAME</name>)
+- `--name` : Template name ( will set `<template>ZBX_TMPLT_NAME</template>` and `<name>ZBX_TMPLT_NAME</name>`)
 - `--output` : Output file path
 
 ## Example
